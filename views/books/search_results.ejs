@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head><title>Search Results</title></head>
+<body>
+  <h1>Search Results for "<%= term %>"</h1>
+
+  <% if (books.length === 0) { %>
+    <p>No books found.</p>
+  <% } else { %>
+    <table border="1" cellpadding="6">
+      <tr><th>ID</th><th>Name</th><th>Price (£)</th></tr>
+      <% books.forEach(b => { %>
+        <tr>
+          <td><%= b.id %></td>
+          <td><%= b.name %></td>
+          <td><%= b.price %></td>
+        </tr>
+      <% }) %>
+    </table>
+  <% } %>
+
+  <p>
+    <a href="/books/search">Search Again</a> |
+    <a href="/books/list">All Books</a>
+  </p>
+</body>
+</html>

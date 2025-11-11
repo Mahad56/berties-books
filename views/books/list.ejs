@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head><title>Book List</title></head>
+<body>
+  <h1>Book List</h1>
+  <table border="1" cellpadding="6">
+    <tr><th>ID</th><th>Name</th><th>Price (£)</th></tr>
+    <% books.forEach(b => { %>
+      <tr>
+        <td><%= b.id %></td>
+        <td><%= b.name %></td>
+        <td><%= b.price %></td>
+      </tr>
+    <% }) %>
+  </table>
+
+  <p>
+    <a href="/books/add">Add Book</a> |
+    <a href="/books/search">Search</a> |
+    <a href="/">Home</a>
+  </p>
+</body>
+</html>
