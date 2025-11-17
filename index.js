@@ -1,14 +1,19 @@
-// Import express and ejs
-var express = require ('express')
-var ejs = require('ejs')
-const path = require('path')
-var mysql = require('mysql2');
+const express = require("express");
+const ejs = require("ejs");
+const path = require("path");
+const mysql = require("mysql2");
+
+
 
 // Create the express application object
 // Create the express application object
 const app = express()
 
 const port = process.env.PORT || 8000
+
+
+
+
 
 
 // Define the database connection pool

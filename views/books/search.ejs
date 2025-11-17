@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Search – Bertie's Books</title>
+  <title>Search Books – Bertie's Books</title>
   <link rel="stylesheet" href="/styles.css">
 </head>
 <body>
@@ -15,15 +15,15 @@
   </nav>
 
   <div class="section">
-    <h2 style="margin-top:0">Search Books</h2>
-    <form method="GET" action="/books/search-result">
-      <label>Title contains</label>
-      <input type="search" name="keyword" placeholder="e.g. Animal" required>
+    <h2>Search Books</h2>
+
+    <form action="/books/search-results" method="GET">
+      <label>Keyword</label>
+      <input type="text" name="keyword" placeholder="Title or author">
+
       <div class="actions">
         <button class="btn btn-primary" type="submit">Search</button>
-        <a class="btn" href="/books/list">All Books</a>
       </div>
-      <p class="help">Tip: try “Brave” or “Hobbit”.</p>
     </form>
   </div>
 </div>
