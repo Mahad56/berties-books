@@ -5,6 +5,14 @@ const bcrypt = require('bcryptjs');
 const db = global.db;
 const saltRounds = 10;
 
+const redirectLogin = (req, res, next) => {
+    if (!req.session.userId) {
+        res.redirect('./login');
+    } else {
+        next();
+    }
+};
+
 // Registration form
 router.get('/register', function (req, res) {
     res.render('register', { shopData: req.app.locals.shopData });
@@ -15,16 +23,13 @@ router.post('/registered', function (req, res, next) {
 
     const { first, last, email, username, password: plainPassword } = req.body;
 
-    // Hash password
     bcrypt.hash(plainPassword, saltRounds, function (err, hashedPassword) {
         if (err) return next(err);
 
-        // Insert user into database
         const sqlquery = "INSERT INTO users (username, first, last, email, hashedPassword) VALUES (?, ?, ?, ?, ?)";
 
         db.query(sqlquery, [username, first, last, email, hashedPassword], (err, result) => {
             if (err) {
-                // Handle duplicate user (username/email)
                 if (err.code === "ER_DUP_ENTRY") {
                     db.query("INSERT INTO audit_log (action) VALUES (?)",
                         [`Failed registration (duplicate): ${username}`]);
@@ -33,7 +38,6 @@ router.post('/registered', function (req, res, next) {
                 return next(err);
             }
 
-            // Log successful registration
             db.query("INSERT INTO audit_log (action) VALUES (?)",
                 [`User registered: ${username}`]);
 
@@ -46,8 +50,8 @@ router.post('/registered', function (req, res, next) {
     });
 });
 
-// List users (NO passwords shown)
-router.get('/list', function (req, res, next) {
+// PROTECTED: List users
+router.get('/list', redirectLogin, function (req, res, next) {
     const sqlquery = "SELECT username, first, last, email FROM users";
     db.query(sqlquery, (err, result) => {
         if (err) return next(err);
@@ -70,7 +74,6 @@ router.post('/loggedin', function (req, res, next) {
         if (err) return next(err);
 
         if (result.length === 0) {
-            // Log unknown user login attempt
             db.query("INSERT INTO audit_log (action) VALUES (?)",
                 [`Failed login (unknown user): ${username}`]);
 
@@ -79,18 +82,20 @@ router.post('/loggedin', function (req, res, next) {
 
         const hashedPassword = result[0].hashedPassword;
 
-        // Compare password
         bcrypt.compare(password, hashedPassword, function (err, match) {
             if (err) return next(err);
 
             if (match === true) {
-                // Log successful login
+
+                // REQUIRED FOR LAB 8:
+                req.session.userId = username;
+
                 db.query("INSERT INTO audit_log (action) VALUES (?)",
                     [`User logged in: ${username}`]);
 
                 return res.send(`Login successful! Welcome back, ${username}.`);
             } else {
-                // Log wrong password attempt
+
                 db.query("INSERT INTO audit_log (action) VALUES (?)",
                     [`Failed login (wrong password): ${username}`]);
 

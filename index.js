@@ -4,6 +4,7 @@ const express = require("express");
 const ejs = require("ejs");
 const path = require("path");
 const mysql = require("mysql2");
+const session = require("express-session");
 
 
 
@@ -39,6 +40,17 @@ app.set('views', path.join(__dirname, 'views'))
 
 // Set up the body parser 
 app.use(express.urlencoded({ extended: true }))
+
+// Create a session
+app.use(session({
+    secret: 'somerandomstuff', // used to sign/encrypt session ID cookie
+    resave: false,
+    saveUninitialized: false,
+    cookie: {
+        expires: 600000 // 10 minutes
+    }
+}));
+
 
 // Set up public folder (for css and static js)
 app.use(express.static(path.join(__dirname, 'public')))
