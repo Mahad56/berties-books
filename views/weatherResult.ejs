@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Weather Results</title>
+  <link rel="stylesheet" href="/styles.css" />
+</head>
+<body>
+<div class="container">
+  
+  <h1>Bertie’s Books</h1>
+
+  <nav>
+    <a href="/">Home</a>
+    <a href="/books/list">All Books</a>
+    <a href="/books/add">Add Book</a>
+    <a href="/books/search">Search Books</a>
+    <a href="/users/register">Register</a>
+    <a href="/users/login">Login</a>
+    <a href="/weather">Weather Forecast</a>
+    <a href="/about">About</a>
+    <a href="/logout">Logout</a>
+  </nav>
+
+  <div class="section">
+    <h2>Weather in <%= weather.name %></h2>
+
+    <p><strong>Temperature:</strong> <%= weather.main.temp %> °C</p>
+    <p><strong>Feels Like:</strong> <%= weather.main.feels_like %> °C</p>
+    <p><strong>Humidity:</strong> <%= weather.main.humidity %>%</p>
+    <p><strong>Condition:</strong> <%= weather.weather[0].description %></p>
+
+    <div class="actions">
+      <a class="btn" href="/weather">Search Again</a>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>
